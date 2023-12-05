@@ -1,0 +1,99 @@
+#include<bits./stdc++.h>
+using namespace std;
+#define N_Vertex 7 // defining vertices size
+struct Union
+{
+    int x,y;
+};
+
+class DisjointSet
+{
+
+    int p[N_Vertex];
+    int rankk[N_Vertex];
+public:
+    void makeset(int x)
+    {
+        for(int i=0; i<N_Vertex; i++)
+        {
+            p[x]=x;
+            rankk[x]=0;
+        }
+    }
+
+    int findset(int x)
+    {
+        while(p[x]!=x)
+        {
+            return p[x]=findset(p[x]);
+        }
+        return x;
+    }
+
+    bool sameset(int x,int y)
+    {
+        if(findset(x)==findset(y))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    int unionset(int x,int y)
+    {
+        int a=findset(x);
+        int b=findset(y);
+        if(a==b)
+        {
+            return 0;
+        }
+        if(rankk[a]>rankk[b])
+        {
+            p[b]=a;
+        }
+        else
+        {
+            p[a]=b;
+            if(rankk[a]==rankk[b])
+            {
+                rankk[b]++;
+            }
+        }
+        return 1;
+    }
+};
+
+int main()
+{
+
+    DisjointSet ds;
+    cout << "Enter the graph of size 7: " <<endl;
+    for(int i=0; i<N_Vertex; i++)
+    {
+        int x;    
+        cin>>x;
+        ds.makeset(x);
+    }
+    cout<<"Enter two sets for Union: " <<endl;
+    for(int j=0; j<2; j++)
+    {
+        struct Union u;
+        cin >> u.x >>u.y;
+        ds.unionset(u.x,u.y);
+    }
+    struct Union u2;
+    cout<< "Enter a set to check if they're in the same set: "<< endl;
+    cin >> u2.x >>u2.y;
+    cout<< "Parent of 3 is : " << ds.findset(3)<<endl;
+    if(ds.sameset(u2.x,u2.y)==true)
+    {
+        printf("Same Set\n");
+    }
+    else
+    {
+        printf("Different Set\n");
+    }
+    return 0;
+}
